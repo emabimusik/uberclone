@@ -28,29 +28,40 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" type="text/javascript"></script>
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>  
   <script>
-
+       
      var socket = io();
-     socket.on("connect",()=>{
-         console.log(socket.id);
-    
-     var driverCurrentData = {
-         "socketId":socket.id,
-         "locationId": "59d50bcc734d1d5e25e4ef9c"
-     };
-     $.ajax({
-        type:"PUT",
-        url:"/api/driverLocationSocket/"+ driverCurrentData.locationId,
-        dataType:'json',
-        data:driverCurrentData
-     }).done(function(response){
-         if(response !== ""){
-             console.log('success');
-         }else{
-             console.log('error'+ response);
-         }
-     });
- });
+     socket.on("connect", ()=>{
+        console.log(socket.id);
+        console.log("socket-connected!");
+        var driverCurrentData = {
+            "socketId":socket.id,
+            "locationId":"59d50b16734d1d5e25e4ef5f" 
+        };
+        $.ajax({
+            type: "PUT",
+            url:"/api/driverLocationSocket/" + driverCurrentData.locationId,
+            dataType:"json",
+            data:driverCurrentData
+        }).done(function(response){
+            if(response !== ""){
+                console.log('success?');
 
+            }else{
+                console.log("Error"+ response);
+            }
+            
+        });
+
+        var driverRequest = socket.id + "driverRequest";
+        socket.on(driverRequest, function(passengerData){
+            if(passengerData){
+                console.log("Passenger looking for a driver", passengerData);
+            }else{
+                console.log("Driver not connected");
+            }
+        });
+    });
   </script>

@@ -2,7 +2,7 @@ const request = require("superagent");
 const defaultAjaxTimeout = 30000;
 
 request.Request.prototype.finish = function(callback){
-    // this replace superagent's end fucntion to include our customer error
+    // this replace superagent"s end fucntion to include our customer error
     //handling
       this.end((err,res) =>{
         callback(err,res);
@@ -13,7 +13,7 @@ request.Request.prototype.finish = function(callback){
 
         return function(url){
             return request[method](url)
-                .type('form')
+                .type("form")
                 .timeout(defaultAjaxTimeout);
             
         };
@@ -21,8 +21,8 @@ request.Request.prototype.finish = function(callback){
 
 
 export default {
-    get:requestWrapper('get'),
-    put:requestWrapper('put'),
-    post:requestWrapper('post'),
-    del:requestWrapper('del'),
+    get:requestWrapper("get"),
+    put:requestWrapper("put"),
+    post:requestWrapper("post"),
+    del:requestWrapper("del"),
 };

@@ -34,8 +34,8 @@ export const MapContainer = ({
             nearByDrivers && nearByDrivers.map((marker,index)=>  
             <MapView.Marker
              key={index}
-             coordinate={{latitude:marker.coordinate.coordinates[0],
-                    longitude:marker.coordinate.coordinates[1]}}
+             coordinate={{latitude:marker.coordinate.coordinates[1],
+                    longitude:marker.coordinate.coordinates[0]}}
              image={carMarker}
              
             /> 

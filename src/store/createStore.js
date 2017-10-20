@@ -1,41 +1,41 @@
+
 import { createStore, applyMiddleware, compose } from "redux";
-import createSocketIoMiddleware from 'redux-socket.io';
 import thunk from "redux-thunk";
+import makeRootReducer from "./reducers";
+import { createLogger } from "redux-logger";
+
+import createSocketIoMiddleware from "redux-socket.io";
+
 import io from "socket.io-client/dist/socket.io";
 
-import makeRootReducer from './reducers';
-import { createLogger } from "redux-logger";
-let  socket = io('http://localhost:3000',{jsonp:false});
-let socketIoMiddleware = createSocketIoMiddleware(socket,'server/');
-const log = createLogger({
-    diff: true, collapsed: true
-});
-// a function that can create our store and persiste the data
+let socket = io("http://localhost:3000", {jsonp:false,transports: ["websocket"]});
+let socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
+
+const log =  createLogger({ diff: true, collapsed: true });
+
+// a function which can create our store and auto-persist the data
 export default (initialState = {}) => {
+    // ======================================================
+    // Middleware Configuration
+    // ======================================================
+    const middleware = [thunk, log, socketIoMiddleware];
 
-    //================================================
-    // Middleware Configuaration
-    //============================================
-    const middleware = [thunk, log,socketIoMiddleware];
-    //================================================
-    // Store enhancers
-    //============================================
+    // ======================================================
+    // Store Enhancers
+    // ======================================================
     const enhancers = [];
-    //================================================
-    //Store Inatallation
-    //============================================
 
-    const store = createStore (
-
+    // ======================================================
+    // Store Instantiation
+    // ======================================================
+    const store = createStore(
         makeRootReducer(),
         initialState,
         compose(
             applyMiddleware(...middleware),
             ...enhancers
         )
-
-
     );
     return store;
+};
 
-}

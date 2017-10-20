@@ -1,6 +1,6 @@
 
-import {connect} from 'react-redux';
-import Home from '../components/Home';
+import {connect} from "react-redux";
+import Home from "../components/Home";
 import {
     //setName
     getCurrentLocation,
@@ -10,7 +10,7 @@ import {
     getSelectedAddress,
     bookCar,
     getNearByDrivers
-} from '../modules/home';
+} from "../modules/home";
 
 const mapStateToProps = (state) => ({
     region :  state.home.region,

@@ -1,12 +1,13 @@
-import React ,{Component} from 'react';
-import {View,Text} from 'react-native';
-import {Container} from 'native-base';
-import MapContainer from './MapContainer';
-import HeaderComponent from '../../../comonComponent/HeaderComponent';
-import FooterComponent from  '../../../comonComponent/FooterComponent';
-import Fare from './Fare';
-import Fab from './Fab';
+import React ,{Component} from "react";
+import {View,Text} from "react-native";
+import {Container} from "native-base";
+import MapContainer from "./MapContainer";
+import HeaderComponent from "../../../comonComponent/HeaderComponent";
+import FooterComponent from  "../../../comonComponent/FooterComponent";
+import Fare from "./Fare";
+import Fab from "./Fab";
 const carMarker = require("../../../assets/img/carMarker.png");
+import FindDriver from "./FindDriver";
 
 
 class Home extends Component{
@@ -27,28 +28,35 @@ class Home extends Component{
          latitudeDelta:0.0421
 
         }
+        const {status} = this.props.booking;
          return(
            <Container>
-               <HeaderComponent/>
-               {this.props.region.latitude &&
-               <MapContainer region={this.props.region}
-               getImputData={this.props.getImputData}
-               toggleSearchResultModal={this.props.toggleSearchResultModal}
-               getAddressPredictions={this.props.getAddressPredictions}
-               predictions={this.props.predictions}
-               resultTypes={this.props.resultTypes}
-               getSelectedAddress= {this.props.getSelectedAddress}
-               selectedAddress={this.props.selectedAddress}
-               carMarker={carMarker}
-               nearByDrivers={this.props.nearByDrivers}
-               />
+              { (status !=="pending") &&
+                <View style={{flex:1}}>
+                      <HeaderComponent/>
+                            {this.props.region.latitude &&
+                            <MapContainer region={this.props.region}
+                            getImputData={this.props.getImputData}
+                            toggleSearchResultModal={this.props.toggleSearchResultModal}
+                            getAddressPredictions={this.props.getAddressPredictions}
+                            predictions={this.props.predictions}
+                            resultTypes={this.props.resultTypes}
+                            getSelectedAddress= {this.props.getSelectedAddress}
+                            selectedAddress={this.props.selectedAddress}
+                            carMarker={carMarker}
+                            nearByDrivers={this.props.nearByDrivers}
+                            />
+                          }
+                        <Fab onPressAction={()=>this.props.bookCar()}/>
+                          {this.props.fare &&
+                          <Fare fare={this.props.fare} />
+                      }
+                    <FooterComponent/>
+                </View>
+                ||
+                <FindDriver  selectedAddress ={this.props.selectedAddress}/>
             }
-           <Fab onPressAction={()=>this.props.bookCar()}/>
-            {this.props.fare &&
-			  <Fare fare={this.props.fare} />
-			}
-            <FooterComponent/>
-          
+            
             </Container>
          )
      }

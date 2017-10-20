@@ -1,9 +1,9 @@
-import update from 'react-addons-update';
-import constants from './actionConstants';
-import request from '../../../util/request';
-import calculateFare from '../../../util/fareCalculator';
-import { Dimensions } from 'react-native';
-import RNGooglePlaces from 'react-native-google-places';
+import update from "react-addons-update";
+import constants from "./actionConstants";
+import request from "../../../util/request";
+import calculateFare from "../../../util/fareCalculator";
+import { Dimensions } from "react-native";
+import RNGooglePlaces from "react-native-google-places";
 
 /**const {SET_NAME} = constants;**/
 const {
@@ -80,9 +80,13 @@ export function toggleSearchResultModal(payload) {
 
 export function bookCar(){
  return (dispatch,store)=>{
+
+     // sending request to one driver
+     const nearByDrivers = store().home.nearByDrivers;
+     const nearByDriver = nearByDrivers[Math.floor(Math.random() * nearByDrivers.length)];
      const payload = {
          data:{
-             userName:'emabi',
+             userName:"emabi",
              pickUp:{
                  address:store().home.selectedAddress.selectedPickUp.address,
                  name:store().home.selectedAddress.selectedPickUp.name,
@@ -96,8 +100,14 @@ export function bookCar(){
                  longitude:store().home.selectedAddress.selectedDropOff.longitude
              },
              fare:store().home.fare,
-             status:'pending'
-         }
+             status:"pending"
+         },
+         nearByDriver:{
+            socketId:nearByDriver.socketId,
+            driverId:nearByDriver.driverId,
+            latitude:nearByDriver.coordinate.coordinates[1],
+            longitude:nearByDriver.coordinate.coordinates[0]
+        }
      };
      request.post("http://localhost:3000/api/bookings")
      .send(payload)
@@ -138,8 +148,8 @@ export function getSelectedAddress(payload) {
                     .query({
                         origins:store().home.selectedAddress.selectedPickUp.latitude+","+store().home.selectedAddress.selectedPickUp.longitude,
                         destinations:store().home.selectedAddress.selectedDropOff.latitude+","+store().home.selectedAddress.selectedDropOff.longitude,
-                        mode:'driving',
-                        key:'AIzaSyDAWT0qrka-zEPFKWQW2yAozXBEO5J39tc'
+                        mode:"driving",
+                        key:"AIzaSyDAWT0qrka-zEPFKWQW2yAozXBEO5J39tc"
                     }).finish((error,res)=>{
                         dispatch({
                             type:GET_DISTANCE_MATRIX,
@@ -237,8 +247,10 @@ export function getNearByDrivers(){
 	return(dispatch, store)=>{
 		request.get("http://localhost:3000/api/driverLocation")
 		.query({
-            latitude:store().home.region.latitude,
-            longitude:store().home.region.longitude	
+         //latitude:store().home.region.latitude,
+        // longitude:store().home.region.longitude	
+           latitude:55.753039,
+           longitude:12.514023
 		})
 		.finish((error, res)=>{
 			if(res){

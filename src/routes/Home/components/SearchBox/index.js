@@ -1,8 +1,8 @@
-import React from 'react';
-import {Text} from 'react-native';
-import {View,InputGroup,Input} from 'native-base';
-import  styles from './SearchBoxStyles.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from "react";
+import {Text} from "react-native";
+import {View,InputGroup,Input} from "native-base";
+import  styles from "./SearchBoxStyles.js";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 
